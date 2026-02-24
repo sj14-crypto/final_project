@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trendify - E Commerce</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="mainSite"></div>
+<header>
+    <div id="loginPage" style="display:none;">
+   <h2>Login Page</h2>
+</div>
+<div>Trendify</div>
+<nav>
+<button onclick="showSection('home')">Home</button>
+
+<button onclick="showSection('wishlist')">
+❤️ Wishlist (<span id="wish-count">0</span>)
+</button>
+
+<button onclick="showSection('cart')">
+Cart (<span id="cart-count">0</span>)
+</button>
+
+<button onclick="showSection('profile')">Profile</button>
+<button onclick="logout()">Logout</button>
+</nav>
+</header>
+
+<div class="categories">
+    <button onclick="filterCategory('All')">All</button>
+    <button onclick="filterCategory('Kurti')">Kurti</button>
+    <button onclick="filterCategory('Saree')">Saree</button>
+    <button onclick="filterCategory('Women Western')">Women Western</button>
+    <button onclick="filterCategory('Men')">Men</button>
+    <button onclick="filterCategory('Kids')">Kids</button>
+    <button onclick="filterCategory('Home')">Home</button>
+    <button onclick="filterCategory('Beauty')">Beauty</button>
+</div>
+
+<div class="sort">
+    <select onchange="sortProducts(this.value)">
+        <option value="">Sort By</option>
+        <option value="low">Price: Low to High</option>
+        <option value="high">Price: High to Low</option>
+    </select>
+</div>
+
+<div id="home" class="section">
+    <div id="product-list" class="product-container"></div>
+</div>
+
+<div id="wishlist" class="section">
+<h2>My Wishlist</h2>
+<div id="wishlist-items"></div>
+</div>
+
+<div id="cart" class="section">
+    <h2>Shopping Cart</h2>
+    <div id="cart-items"></div>
+
+    <h3>Total: ₹<span id="total">0</span></h3>
+
+    <h3>Delivery Address</h3>
+    <textarea id="address" placeholder="Enter your full address"></textarea>
+
+    <h3>Payment Method</h3>
+    <select id="payment">
+        <option value="COD">Cash on Delivery</option>
+        <option value="UPI">UPI</option>
+        <option value="Card">Credit/Debit Card</option>
+    </select>
+
+    <br><br>
+    <button onclick="placeOrder()">Place Order</button>
+</div>
+
+<div id="profile" class="section profile-page">
+
+<div class="account-header">
+    <span class="back-arrow">←</span>
+    <h3>ACCOUNT</h3>
+</div>
+
+<div class="profile-top">
+    <img src="https://cdn-icons-png.flaticon.com/512/1946/1946429.png" class="profile-img">
+    <div>
+        <h3>Crazy Gourya</h3>
+        <p>View & Edit Profile</p>
+    </div>
+</div>
+
+<div class="profile-card-row">
+    <div class="profile-card">
+        📞<br>Help Centre
+    </div>
+    <div class="profile-card">
+        🎁<br>Refer & Earn
+    </div>
+</div>
+
+<h4 class="profile-title">My Payments</h4>
+
+<div class="profile-list-item">💳 Bank & UPI Details</div>
+<div class="profile-list-item">💰 Payment & Refund</div>
+
+<h4 class="profile-title">My Activity</h4>
+
+<div class="profile-list-item">🌐 Change Language</div>
+<div class="profile-list-item">❤️ Wishlisted Products</div>
+<div class="profile-list-item">📤 Shared Products</div>
+<div class="profile-list-item">🏬 Followed Shops</div>
+
+<h4 class="profile-title">Others</h4>
+
+<div class="profile-list-item">⚙ Settings</div>
+<div class="profile-list-item">⭐ Rate Trendify</div>
+<div class="profile-list-item">📜 Legal & Policies</div>
+<div class="profile-list-item logout-btn" onclick="logout()">🚪 Logout</div>
+
+</div>
+
+</div>
+
+<script src="script.js"></script>
+<div id="orderPopup" class="popup">
+  <div class="popup-content">
+      <div class="checkmark">✓</div>
+      <h2>Order Placed Successfully!</h2>
+      <p>Your order has been confirmed.</p>
+      <button onclick="closePopup()">Continue Shopping</button>
+  </div>
+</div>
+<div id="logoutPopup" class="popup">
+  <div class="popup-content">
+      <div class="logout-icon">👋</div>
+      <h2>Logged Out Successfully!</h2>
+      <p>See you again soon.</p>
+      <button onclick="confirmLogout()">Login Again</button>
+  </div>
+</div>
+<div id="wishlistPopup" class="popup">
+  <div class="popup-content">
+      <div class="heart-icon">❤️</div>
+      <h2>Added to Wishlist!</h2>
+      <p>This item has been saved.</p>
+      <button onclick="closeWishlistPopup()">View Wishlist</button>
+  </div>
+</div>
+</body>
+</html>

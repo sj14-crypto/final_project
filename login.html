@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trendify Login</title>
+
+<style>
+*{box-sizing:border-box;font-family:Arial}
+body{
+margin:0;
+background:#f2f2f2;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+overflow:hidden;
+}
+
+.card{
+width:360px;
+background:white;
+padding:25px;
+border-radius:12px;
+box-shadow:0 15px 35px rgba(0,0,0,0.2);
+position:absolute;
+transition:0.4s;
+}
+
+.hidden{
+transform:translateX(400px);
+opacity:0;
+}
+
+h2{text-align:center;margin-bottom:15px;color:#f43397}
+
+button{
+width:100%;
+padding:10px;
+border:none;
+border-radius:6px;
+margin-top:15px;
+background:#f43397;
+color:white;
+cursor:pointer;
+opacity:0.5;
+}
+button.active{
+opacity:1;
+cursor:pointer;
+}
+
+input{
+width:100%;
+padding:10px;
+margin:8px 0;
+border:1px solid #ccc;
+border-radius:5px;
+}
+
+.otp-box{
+display:flex;
+justify-content:space-between;
+}
+.otp-box input{
+width:60px;
+text-align:center;
+font-size:20px;
+}
+
+.timer{
+text-align:center;
+margin-top:10px;
+color:red;
+}
+
+.success{
+text-align:center;
+color:green;
+font-size:20px;
+}
+</style>
+</head>
+<body>
+
+<div class="card" id="loginPage">
+<h2>Login / Register</h2>
+<input id="contactInput" placeholder="Enter Email or Mobile">
+<button id="loginBtn" disabled onclick="generateOTP()">Continue</button>
+</div>
+
+<div class="card hidden" id="otpPage">
+<h2>OTP Verification</h2>
+
+<p style="text-align:center">Generated OTP: <b id="generatedOtp"></b></p>
+
+<div class="otp-box">
+<input maxlength="1" oninput="moveNext(this,0)">
+<input maxlength="1" oninput="moveNext(this,1)">
+<input maxlength="1" oninput="moveNext(this,2)">
+<input maxlength="1" oninput="moveNext(this,3)">
+</div>
+
+<div class="timer" id="timer"></div>
+
+<button id="verifyBtn" disabled onclick="verifyOTP()">Verify</button>
+<button onclick="resendOTP()">Resend OTP</button>
+</div>
+
+<div class="card hidden" id="successPage">
+<h2 class="success">✅ Login Successful</h2>
+<p style="text-align:center">Redirecting to Trendify...</p>
+</div>
+
+<script>
+
+let otp="";
+let countdownInterval;
+
+function showPage(current,next){
+document.getElementById(current).classList.add("hidden");
+document.getElementById(next).classList.remove("hidden");
+}
+
+let contactInput=document.getElementById("contactInput");
+let loginBtn=document.getElementById("loginBtn");
+
+contactInput.addEventListener("input",function(){
+if(this.value.length>=10){
+loginBtn.disabled=false;
+loginBtn.classList.add("active");
+}else{
+loginBtn.disabled=true;
+loginBtn.classList.remove("active");
+}
+});
+
+function generateOTP(){
+otp=Math.floor(1000+Math.random()*9000).toString();
+document.getElementById("generatedOtp").innerText=otp;
+showPage("loginPage","otpPage");
+startTimer();
+}
+
+function startTimer(){
+let time=30;
+let timer=document.getElementById("timer");
+timer.innerText="Expires in "+time+"s";
+
+countdownInterval=setInterval(()=>{
+time--;
+timer.innerText="Expires in "+time+"s";
+if(time<=0){
+clearInterval(countdownInterval);
+timer.innerText="OTP Expired";
+}
+},1000);
+}
+
+
+function resendOTP(){
+clearInterval(countdownInterval);
+generateOTP();
+}
+
+function moveNext(el,index){
+let inputs=document.querySelectorAll(".otp-box input");
+if(el.value.length==1 && index<3){
+inputs[index+1].focus();
+}
+checkOTPInputs();
+}
+
+function checkOTPInputs(){
+let values=[...document.querySelectorAll(".otp-box input")].map(i=>i.value).join("");
+let verifyBtn=document.getElementById("verifyBtn");
+
+if(values.length==4){
+verifyBtn.disabled=false;
+verifyBtn.classList.add("active");
+}else{
+verifyBtn.disabled=true;
+verifyBtn.classList.remove("active");
+}
+}
+
+function verifyOTP(){
+let entered=[...document.querySelectorAll(".otp-box input")].map(i=>i.value).join("");
+
+if(entered===otp){
+localStorage.setItem("trendifyUser", contactInput.value);
+showPage("otpPage","successPage");
+
+setTimeout(()=>{
+window.location.href="index.html";  
+},2000);
+
+}else{
+alert("Incorrect OTP");
+}
+}
+
+</script>
+</body>
+</html>
